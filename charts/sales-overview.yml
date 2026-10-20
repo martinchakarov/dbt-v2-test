@@ -6,6 +6,12 @@ variables:
     input: daterange
     label: Order date
     default: [2016-09-01, 2016-09-16]
+  order_type:
+    input: select
+    label: Order type
+    options:
+      static: [All, Food, Drink, Both]
+    default: All
 
 queries:
   sales_kpis:
@@ -17,6 +23,12 @@ queries:
         COUNT(DISTINCT customer_id) AS customers
       FROM DBT_TEST.ORDERS
       WHERE {{ filter_date_range('order_date', period) }}
+        AND (
+          '{{ order_type }}' = 'All'
+          OR ('{{ order_type }}' = 'Food' AND is_food_order)
+          OR ('{{ order_type }}' = 'Drink' AND is_drink_order)
+          OR ('{{ order_type }}' = 'Both' AND is_food_order AND is_drink_order)
+        )
     formats:
       revenue: currency_whole
       orders: integer
@@ -30,11 +42,40 @@ queries:
         COUNT(*) AS orders
       FROM DBT_TEST.ORDERS
       WHERE {{ filter_date_range('order_date', period) }}
+        AND (
+          '{{ order_type }}' = 'All'
+          OR ('{{ order_type }}' = 'Food' AND is_food_order)
+          OR ('{{ order_type }}' = 'Drink' AND is_drink_order)
+          OR ('{{ order_type }}' = 'Both' AND is_food_order AND is_drink_order)
+        )
       GROUP BY order_date
       ORDER BY order_date
     formats:
       revenue: currency_whole
       orders: integer
+  product_sales:
+    sql: |
+      SELECT
+        oi.product_name,
+        SUM(oi.product_price) AS sales,
+        SUM(oi.product_price - oi.supply_cost) AS gross_profit,
+        COUNT(*) AS items_sold
+      FROM DBT_TEST.ORDER_ITEMS oi
+      JOIN DBT_TEST.ORDERS o ON oi.order_id = o.order_id
+      WHERE {{ filter_date_range('o.order_date', period) }}
+        AND (
+          '{{ order_type }}' = 'All'
+          OR ('{{ order_type }}' = 'Food' AND o.is_food_order)
+          OR ('{{ order_type }}' = 'Drink' AND o.is_drink_order)
+          OR ('{{ order_type }}' = 'Both' AND o.is_food_order AND o.is_drink_order)
+        )
+      GROUP BY oi.product_name
+      ORDER BY sales DESC
+      LIMIT 10
+    formats:
+      sales: currency_whole
+      gross_profit: currency_whole
+      items_sold: integer
 
 charts:
   total_revenue:
@@ -52,6 +93,14 @@ charts:
     x: order_date
     y: revenue
     y_label: Revenue
+  top_products:
+    query: product_sales
+    type: bar
+    title: Top Products by Sales
+    x: product_name
+    y: sales
+    y_label: Sales
 
 rows:
   - cols: [total_revenue, revenue_trend]
+  - top_products
