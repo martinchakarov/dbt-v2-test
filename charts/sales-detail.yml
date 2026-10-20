@@ -51,7 +51,6 @@ queries:
       supply_cost: currency_full
       gross_profit: currency_full
       order_total: currency_full
-      count_order_items: integer
 
 charts:
   order_line_table:
