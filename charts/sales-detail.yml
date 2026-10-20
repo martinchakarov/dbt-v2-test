@@ -39,7 +39,7 @@ queries:
         )
         AND (
           '{{ selected_product }}' = 'All'
-          OR oi.product_name = '{{ selected_product }}'
+          OR TRIM(oi.product_name) = TRIM('{{ selected_product }}')
         )
         AND (
           '{{ order_type }}' = 'All'
