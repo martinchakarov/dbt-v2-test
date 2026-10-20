@@ -117,7 +117,6 @@ charts:
     x: order_date
     y: revenue
     y_label: Revenue
-    link: "sales-detail.yml?selected_date={{ order_date }}&selected_product=All&order_type={{ order_type }}"
   orders_trend:
     query: daily_sales
     type: line
