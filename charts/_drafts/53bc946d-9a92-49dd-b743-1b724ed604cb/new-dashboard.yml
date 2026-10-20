@@ -1,0 +1,29 @@
+source: dbt_v2_test
+
+queries:
+  customer_activity:
+    sql: |
+      SELECT
+        o.order_date,
+        COUNT(DISTINCT o.customer_id) AS active_customers,
+        SUM(CASE WHEN o.customer_order_number = 1 THEN 1 ELSE 0 END) AS first_orders,
+        SUM(o.order_total) AS revenue
+      FROM DBT_TEST.ORDERS o
+      GROUP BY o.order_date
+      ORDER BY o.order_date
+    formats:
+      active_customers: integer
+      first_orders: integer
+      revenue: currency_whole
+
+charts:
+  customer_trend:
+    query: customer_activity
+    type: line
+    title: Active Customers and First Orders
+    x: order_date
+    y: [active_customers, first_orders]
+    y_label: Customers
+
+rows:
+  - customer_trend

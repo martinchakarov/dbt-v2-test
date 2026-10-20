@@ -1,0 +1,30 @@
+title: Sales Overview
+source: dbt_v2_test
+
+queries:
+  daily_sales:
+    sql: |
+      SELECT
+        order_date,
+        COUNT(*) AS orders,
+        SUM(order_total) AS revenue,
+        AVG(order_total) AS average_order_value
+      FROM DBT_TEST.ORDERS
+      GROUP BY order_date
+      ORDER BY order_date
+    formats:
+      revenue: currency_whole
+      average_order_value: currency_full
+      orders: integer
+
+charts:
+  revenue_trend:
+    query: daily_sales
+    type: line
+    title: Daily Revenue
+    x: order_date
+    y: revenue
+    y_label: Revenue
+
+rows:
+  - revenue_trend
