@@ -64,9 +64,6 @@ charts:
         order_id:
           label: Order ID
           format: id
-        customer_id:
-          label: Customer ID
-          format: id
         product_name:
           label: Product
         item_sales:
