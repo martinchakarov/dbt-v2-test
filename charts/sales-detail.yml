@@ -91,6 +91,7 @@ charts:
           label: Items in Order
           format: integer
           align: right
+          width: 120
 
 rows:
   - order_line_table
