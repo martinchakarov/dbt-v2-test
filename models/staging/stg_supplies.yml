@@ -1,0 +1,22 @@
+models:
+  - name: stg_supplies
+    description: >
+      List of our supply expenses data with basic cleaning and transformation applied.
+
+      One row per supply cost, not per supply. As supply costs fluctuate they receive a new row with a new UUID. Thus there can be multiple rows per supply_id.
+    columns:
+      - name: supply_uuid
+        description: The unique key of our supplies per cost.
+        data_tests:
+          - not_null
+          - unique
+      - name: supply_id
+        description: The source identifier for the supply type.
+      - name: product_id
+        description: The identifier of the product that uses this supply.
+      - name: supply_name
+        description: The name of the ingredient, packaging, or other supply.
+      - name: supply_cost
+        description: The cost of this supply in dollars.
+      - name: is_perishable_supply
+        description: Whether this supply is perishable.

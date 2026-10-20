@@ -1,0 +1,21 @@
+models:
+  - name: stg_products
+    description: Product (food and drink items that can be ordered) data with basic cleaning and transformation applied, one row per product.
+    columns:
+      - name: product_id
+        description: The unique key for each product.
+        data_tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: The name of the food or drink product.
+      - name: product_type
+        description: The source category for the product, such as jaffle or beverage.
+      - name: product_description
+        description: A description of the product and its ingredients or preparation.
+      - name: product_price
+        description: The selling price of one product in dollars.
+      - name: is_food_item
+        description: Whether the product is categorized as a jaffle (food item).
+      - name: is_drink_item
+        description: Whether the product is categorized as a beverage (drink item).

@@ -1,0 +1,57 @@
+models:
+  - name: order_items
+    columns:
+      - name: order_item_id
+        description: The unique key for each item included in an order.
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: The identifier of the order that contains this item.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('orders')
+                field: order_id
+      - name: product_id
+        description: The identifier of the product included in this order item.
+      - name: order_date
+        description: The calendar date the containing order was placed.
+      - name: product_name
+        description: The name of the product included in this order item.
+      - name: product_price
+        description: The selling price of one unit of the product in dollars.
+      - name: is_food_item
+        description: Whether the product is categorized as a food item.
+      - name: is_drink_item
+        description: Whether the product is categorized as a drink item.
+      - name: supply_cost
+        description: The summed cost in dollars of supplies required for one unit of the product.
+unit_tests:
+  - name: test_supply_costs_sum_correctly
+    description: "Test that the counts of drinks and food orders convert to booleans properly."
+    model: order_items
+    given:
+      - input: ref('stg_supplies')
+        rows:
+          - {product_id: 1, supply_cost: 4.50}
+          - {product_id: 2, supply_cost: 3.50}
+          - {product_id: 2, supply_cost: 5.00}
+      - input: ref('stg_products')
+        rows:
+          - {product_id: 1}
+          - {product_id: 2}
+      - input: ref('stg_order_items')
+        rows:
+          - {order_id: 1, product_id: 1}
+          - {order_id: 2, product_id: 2}
+          - {order_id: 2, product_id: 2}
+      - input: ref('stg_orders')
+        rows:
+          - {order_id: 1}
+          - {order_id: 2}
+    expect:
+      rows:
+        - {order_id: 1, product_id: 1, supply_cost: 4.50}
+        - {order_id: 2, product_id: 2, supply_cost: 8.50}
+        - {order_id: 2, product_id: 2, supply_cost: 8.50}

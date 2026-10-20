@@ -1,0 +1,31 @@
+models:
+  - name: stg_orders
+    description: Order data with basic cleaning and transformation applied, one row per order.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "order_total - tax_paid = subtotal"
+    columns:
+      - name: order_id
+        description: The unique key for each order.
+        data_tests:
+          - not_null
+          - unique
+      - name: location_id
+        description: The identifier of the store location where the order was placed.
+      - name: customer_id
+        description: The identifier of the customer who placed the order.
+      - name: subtotal_cents
+        description: The pre-tax order subtotal in cents, as recorded in the source data.
+      - name: tax_paid_cents
+        description: The tax charged on the order in cents, as recorded in the source data.
+      - name: order_total_cents
+        description: The total order amount including tax in cents, as recorded in the source data.
+      - name: subtotal
+        description: The pre-tax order subtotal converted from cents to dollars.
+      - name: tax_paid
+        description: The tax charged on the order converted from cents to dollars.
+      - name: order_total
+        description: The total order amount including tax converted from cents to dollars.
+      - name: order_date
+        description: The calendar date the order was placed.
