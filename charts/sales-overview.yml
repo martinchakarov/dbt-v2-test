@@ -22,6 +22,19 @@ queries:
       orders: integer
       average_order_value: currency_full
       customers: integer
+  daily_sales:
+    sql: |
+      SELECT
+        order_date,
+        SUM(order_total) AS revenue,
+        COUNT(*) AS orders
+      FROM DBT_TEST.ORDERS
+      WHERE {{ filter_date_range('order_date', period) }}
+      GROUP BY order_date
+      ORDER BY order_date
+    formats:
+      revenue: currency_whole
+      orders: integer
 
 charts:
   total_revenue:
@@ -32,6 +45,13 @@ charts:
     style:
       value:
         format: currency_whole
+  revenue_trend:
+    query: daily_sales
+    type: line
+    title: Daily Revenue
+    x: order_date
+    y: revenue
+    y_label: Revenue
 
 rows:
-  - total_revenue
+  - cols: [total_revenue, revenue_trend]
