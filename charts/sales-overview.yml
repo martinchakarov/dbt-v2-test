@@ -138,7 +138,6 @@ charts:
     x: product_name
     y: gross_profit
     y_label: Gross Profit
-    link: "sales-detail.yml?selected_date=All&selected_product={{ product_name }}&order_type={{ order_type }}"
   sales_detail:
     query: product_sales
     type: table
