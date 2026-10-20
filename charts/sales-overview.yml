@@ -142,7 +142,6 @@ charts:
     query: product_sales
     type: table
     title: Product Sales Detail
-    link: "sales-detail.yml?selected_date=All&selected_product={{ product_name }}&order_type={{ order_type }}"
     style:
       columns:
         sales:
