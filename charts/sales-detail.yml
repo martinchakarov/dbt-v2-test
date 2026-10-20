@@ -24,13 +24,11 @@ queries:
       SELECT
         o.order_date,
         o.order_id,
-        o.customer_id,
         oi.product_name,
         oi.product_price AS item_sales,
         oi.supply_cost,
         oi.product_price - oi.supply_cost AS gross_profit,
-        o.order_total,
-        o.count_order_items
+        o.order_total
       FROM DBT_TEST.ORDER_ITEMS oi
       JOIN DBT_TEST.ORDERS o ON oi.order_id = o.order_id
       WHERE (
