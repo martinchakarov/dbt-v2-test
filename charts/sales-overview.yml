@@ -117,6 +117,9 @@ charts:
     x: order_date
     y: revenue
     y_label: Revenue
+    link:
+      url: "/martin-chakarov/dbt-v2-test/d/sales-detail?selected_date={{ order_date }}&selected_product=All&order_type={{ order_type }}"
+      open: modal
   orders_trend:
     query: daily_sales
     type: line
@@ -124,6 +127,9 @@ charts:
     x: order_date
     y: orders
     y_label: Orders
+    link:
+      url: "/martin-chakarov/dbt-v2-test/d/sales-detail?selected_date={{ order_date }}&selected_product=All&order_type={{ order_type }}"
+      open: modal
   top_products:
     query: product_sales
     type: bar
@@ -131,6 +137,9 @@ charts:
     x: product_name
     y: sales
     y_label: Sales
+    link:
+      url: "/martin-chakarov/dbt-v2-test/d/sales-detail?selected_date=All&selected_product={{ product_name }}&order_type={{ order_type }}"
+      open: modal
   product_profit:
     query: product_sales
     type: bar
@@ -138,10 +147,16 @@ charts:
     x: product_name
     y: gross_profit
     y_label: Gross Profit
+    link:
+      url: "/martin-chakarov/dbt-v2-test/d/sales-detail?selected_date=All&selected_product={{ product_name }}&order_type={{ order_type }}"
+      open: modal
   sales_detail:
     query: product_sales
     type: table
     title: Product Sales Detail
+    link:
+      url: "/martin-chakarov/dbt-v2-test/d/sales-detail?selected_date=All&selected_product={{ product_name }}&order_type={{ order_type }}"
+      open: modal
     style:
       columns:
         sales:
