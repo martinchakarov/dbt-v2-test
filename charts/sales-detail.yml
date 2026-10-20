@@ -59,7 +59,6 @@ charts:
   order_line_table:
     query: order_line_detail
     type: table
-    title: Order Line Detail
     style:
       columns:
         order_date:
