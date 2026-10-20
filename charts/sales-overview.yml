@@ -1,30 +1,37 @@
 title: Sales Overview
 source: dbt_v2_test
 
+variables:
+  period:
+    input: daterange
+    label: Order date
+    default: [2016-09-01, 2016-09-16]
+
 queries:
-  daily_sales:
+  sales_kpis:
     sql: |
       SELECT
-        order_date,
-        COUNT(*) AS orders,
         SUM(order_total) AS revenue,
-        AVG(order_total) AS average_order_value
+        COUNT(*) AS orders,
+        AVG(order_total) AS average_order_value,
+        COUNT(DISTINCT customer_id) AS customers
       FROM DBT_TEST.ORDERS
-      GROUP BY order_date
-      ORDER BY order_date
+      WHERE {{ filter_date_range('order_date', period) }}
     formats:
       revenue: currency_whole
-      average_order_value: currency_full
       orders: integer
+      average_order_value: currency_full
+      customers: integer
 
 charts:
-  revenue_trend:
-    query: daily_sales
-    type: line
-    title: Daily Revenue
-    x: order_date
-    y: revenue
-    y_label: Revenue
+  total_revenue:
+    query: sales_kpis
+    type: kpi
+    value: revenue
+    label: Revenue
+    style:
+      value:
+        format: currency_whole
 
 rows:
-  - revenue_trend
+  - total_revenue
