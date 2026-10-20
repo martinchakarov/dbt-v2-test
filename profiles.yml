@@ -2,6 +2,15 @@
     target: dev
     outputs:
       dev:
-        type: duckdb
-        path: "md:my_db?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
-        threads: 4
+        # type: duckdb
+        # path: "md:my_db?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
+        # threads: 4
+        type: snowflake
+        threads: 16
+        account: GIGNTYP-NJ61265
+        user: dbt_user
+        private_key: "{{ env_var('DBT_PRIVATE_KEY') }}"
+        role: dbt_role
+        database: dbt_database
+        schema: dbt_test
+        warehouse: dbt_warehouse
