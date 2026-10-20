@@ -82,11 +82,6 @@ charts:
           label: Order Total
           format: currency_full
           align: right
-        count_order_items:
-          label: Items in Order
-          format: integer
-          align: right
-          width: 120
 
 rows:
   - order_line_table
