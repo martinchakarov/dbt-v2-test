@@ -86,6 +86,30 @@ charts:
     style:
       value:
         format: currency_whole
+  total_orders:
+    query: sales_kpis
+    type: kpi
+    value: orders
+    label: Orders
+    style:
+      value:
+        format: integer
+  average_order_value:
+    query: sales_kpis
+    type: kpi
+    value: average_order_value
+    label: Average Order Value
+    style:
+      value:
+        format: currency_full
+  active_customers:
+    query: sales_kpis
+    type: kpi
+    value: customers
+    label: Active Customers
+    style:
+      value:
+        format: integer
   revenue_trend:
     query: daily_sales
     type: line
@@ -93,6 +117,13 @@ charts:
     x: order_date
     y: revenue
     y_label: Revenue
+  orders_trend:
+    query: daily_sales
+    type: line
+    title: Daily Orders
+    x: order_date
+    y: orders
+    y_label: Orders
   top_products:
     query: product_sales
     type: bar
@@ -100,7 +131,34 @@ charts:
     x: product_name
     y: sales
     y_label: Sales
+  product_profit:
+    query: product_sales
+    type: bar
+    title: Top Products by Gross Profit
+    x: product_name
+    y: gross_profit
+    y_label: Gross Profit
+  sales_detail:
+    query: product_sales
+    type: table
+    title: Product Sales Detail
+    style:
+      columns:
+        sales:
+          label: Sales
+          format: currency_whole
+          align: right
+        gross_profit:
+          label: Gross Profit
+          format: currency_whole
+          align: right
+        items_sold:
+          label: Items Sold
+          format: integer
+          align: right
 
 rows:
-  - cols: [total_revenue, revenue_trend]
-  - top_products
+  - cols: [total_revenue, total_orders, average_order_value, active_customers]
+  - cols: [revenue_trend, orders_trend]
+  - cols: [top_products, product_profit]
+  - sales_detail
